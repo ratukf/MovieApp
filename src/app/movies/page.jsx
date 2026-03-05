@@ -8,8 +8,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const MoviesPage = () => {
-  const { isLoading, error, isFetched } = useMovieStore();
+  const { isLoading, genres, error, isFetched } = useMovieStore();
   const [search, setSearch] = useState();
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     if (!isFetched) {
@@ -24,7 +25,23 @@ const MoviesPage = () => {
       <Link href="/movies/add">Add Movie</Link>
       <Link href="/bookmarks">Bookmarks</Link>
       <input onChange={(e) => setSearch(e.target.value)} value={search} />
-      {isLoading ? <p>Loading ...</p> : <MovieList search={search} />}
+      <p>Filter Genres</p>
+      <select
+        onChange={(e) => setFilter(Number(e.target.value))}
+        value={filter}
+      >
+        <option value="">All Genres</option>
+        {genres.map((genre) => (
+          <option key={genre.id} value={genre.id}>
+            {genre.name}
+          </option>
+        ))}
+      </select>
+      {isLoading ? (
+        <p>Loading ...</p>
+      ) : (
+        <MovieList search={search} filter={filter} />
+      )}
       <Pagination />
     </main>
   );

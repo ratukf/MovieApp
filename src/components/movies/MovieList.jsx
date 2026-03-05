@@ -3,12 +3,12 @@
 import { MovieCard } from "@/components/movies/MovieCard";
 import { useMovieStore } from "@/store/movieStore";
 
-const MovieList = ({ search }) => {
+const MovieList = ({ search, filter }) => {
   const { movies } = useMovieStore();
 
-  const filtered = movies.filter((m) =>
-    m.title.toLowerCase().includes((search || "").toLowerCase()),
-  );
+  const filtered = movies
+    .filter((m) => m.title.toLowerCase().includes((search || "").toLowerCase()))
+    .filter((m) => (filter ? m.genre_ids.includes(filter) : true));
 
   return (
     <div>
