@@ -8,17 +8,24 @@ import { useMovieStore } from "@/store/movieStore";
 const MovieDetail = () => {
   const { id } = useParams();
   const router = useRouter();
-  const { movies, genres, deleteMovie } = useMovieStore();
+  const { movies, genres, bookmarks, toggleBookmark, deleteMovie } =
+    useMovieStore();
 
   const movie = movies.find((item) => item.id === Number(id));
 
   if (!movie) return <p>Movie not found</p>;
+
+  const isBookmarked = bookmarks.includes(movie.id);
 
   const year = movie.release_date?.split("-")[0];
 
   const handleDelete = () => {
     deleteMovie(movie.id);
     router.push("/movies");
+  };
+
+  const handleBookmark = () => {
+    toggleBookmark(movie.id);
   };
 
   return (
@@ -50,6 +57,9 @@ const MovieDetail = () => {
 
       <Link href={`/movies/${movie.id}/edit`}>Edit</Link>
       <button onClick={handleDelete}>Delete</button>
+      <button onClick={handleBookmark}>
+        {isBookmarked ? "Remove Bookmark" : "Add Bookmark"}
+      </button>
     </div>
   );
 };
