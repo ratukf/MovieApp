@@ -13,6 +13,11 @@ const validationSchema = Yup.object({
     .max(10, "Rating must be at most 10"),
 });
 
+const inputCls =
+  "w-full rounded-xl bg-white/5 border border-white/10 text-white text-sm px-4 py-2.5 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/40 transition-all";
+const labelCls = "block text-sm font-medium text-slate-400 mb-1.5";
+const errorCls = "text-xs text-red-400 mt-1";
+
 const MovieForm = ({ initialValues, onSubmit }) => {
   const { genres } = useMovieStore();
   const formik = useFormik({
@@ -35,71 +40,97 @@ const MovieForm = ({ initialValues, onSubmit }) => {
   };
 
   return (
-    <div>
+    <div className="space-y-5">
+      {/* Title */}
       <div>
-        <label>Title</label>
+        <label className={labelCls}>Title</label>
         <input
           name="title"
+          placeholder="e.g. Inception"
           value={formik.values.title}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          className={`${inputCls} ${formik.touched.title && formik.errors.title ? "border-red-500/50" : ""}`}
         />
         {formik.touched.title && formik.errors.title && (
-          <p>{formik.errors.title}</p>
+          <p className={errorCls}>{formik.errors.title}</p>
         )}
       </div>
 
+      {/* Overview */}
       <div>
-        <label>Overview</label>
+        <label className={labelCls}>Overview</label>
         <textarea
           name="overview"
+          rows={4}
+          placeholder="Brief description of the movie..."
           value={formik.values.overview}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          className={`${inputCls} resize-none ${formik.touched.overview && formik.errors.overview ? "border-red-500/50" : ""}`}
         />
         {formik.touched.overview && formik.errors.overview && (
-          <p>{formik.errors.overview}</p>
+          <p className={errorCls}>{formik.errors.overview}</p>
         )}
       </div>
 
+      {/* Rating */}
       <div>
-        <label>Rating</label>
+        <label className={labelCls}>Rating (0–10)</label>
         <input
           type="number"
           name="vote_average"
           min="0"
           max="10"
           step="0.1"
+          placeholder="e.g. 8.5"
           value={formik.values.vote_average}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          className={`${inputCls} ${formik.touched.vote_average && formik.errors.vote_average ? "border-red-500/50" : ""}`}
         />
         {formik.touched.vote_average && formik.errors.vote_average && (
-          <p>{formik.errors.vote_average}</p>
+          <p className={errorCls}>{formik.errors.vote_average}</p>
         )}
       </div>
 
+      {/* Genres */}
       <div>
-        <label>Genres</label>
-        <div>
-          {genres.map((genre) => (
-            <label key={genre.id}>
-              <input
-                type="checkbox"
-                checked={(formik.values.genre_ids ?? []).includes(genre.id)}
-                onChange={() => handleGenreChange(genre.id)}
-              />
-              {genre.name}
-            </label>
-          ))}
+        <label className={labelCls}>Genres</label>
+        <div className="flex flex-wrap gap-2">
+          {genres.map((genre) => {
+            const selected = (formik.values.genre_ids ?? []).includes(genre.id);
+            return (
+              <label
+                key={genre.id}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm cursor-pointer transition-all duration-200 select-none ${selected
+                    ? "bg-yellow-400/10 border-yellow-400/30 text-yellow-400"
+                    : "bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-slate-200"
+                  }`}
+              >
+                <input
+                  type="checkbox"
+                  className="sr-only"
+                  checked={selected}
+                  onChange={() => handleGenreChange(genre.id)}
+                />
+                {genre.name}
+              </label>
+            );
+          })}
         </div>
         {formik.touched.genre_ids && formik.errors.genre_ids && (
-          <p>{formik.errors.genre_ids}</p>
+          <p className={errorCls}>{formik.errors.genre_ids}</p>
         )}
       </div>
 
-      <button type="submit" onClick={formik.handleSubmit}>
-        Save
+      {/* Submit */}
+      <button
+        type="submit"
+        onClick={formik.handleSubmit}
+        className="w-full py-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-semibold text-sm transition-all duration-200 shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 active:scale-[0.98]"
+      >
+        Save Movie
       </button>
     </div>
   );

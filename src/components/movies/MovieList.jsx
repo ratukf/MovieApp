@@ -25,8 +25,22 @@ const MovieList = ({ search, filter, sort, order }) => {
       return 0;
     });
 
+  if (!filtered.length) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4">
+          <svg className="w-8 h-8 text-slate-600" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+          </svg>
+        </div>
+        <p className="text-slate-400 font-medium">No movies found</p>
+        <p className="text-slate-600 text-sm mt-1">Try adjusting your filters</p>
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
       {filtered.map((item) => (
         <MovieCard
           key={item.id}

@@ -17,15 +17,35 @@ const Pagination = ({ search, filter, sort, order }) => {
   };
 
   return (
-    <div>
-      <button onClick={handlePrev} disabled={page <= 1}>
+    <div className="flex items-center justify-center gap-4 mt-8 py-4">
+      <button
+        onClick={handlePrev}
+        disabled={page <= 1}
+        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm font-medium text-slate-300 hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
         Prev
       </button>
-      <p>
-        {page} / {totalPage}
-      </p>
-      <button onClick={handleNext} disabled={page >= totalPage}>
+
+      <div className="flex items-center gap-2">
+        <span className="px-3 py-1.5 rounded-lg bg-yellow-400/10 border border-yellow-400/20 text-yellow-400 text-sm font-bold">
+          {page}
+        </span>
+        <span className="text-slate-600 text-sm">/</span>
+        <span className="text-sm text-slate-400">{totalPage}</span>
+      </div>
+
+      <button
+        onClick={handleNext}
+        disabled={page >= totalPage}
+        className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-sm font-medium text-slate-300 hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+      >
         Next
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
       </button>
     </div>
   );
