@@ -20,6 +20,7 @@ const MoviesPage = () => {
   return (
     <main>
       <Link href="/movies/add">Add Movie</Link>
+      <Link href="/bookmarks">Bookmarks</Link>
       {isLoading ? <p>Loading ...</p> : <MovieList />}
       <Pagination />
     </main>
