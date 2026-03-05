@@ -1,3 +1,5 @@
-export default function EditPage() {
+const EditPage = () => {
   return <div>Edit Page</div>;
-}
+};
+
+export default EditPage;
