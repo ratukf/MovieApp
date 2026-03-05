@@ -13,6 +13,9 @@ const AddMovieForm = () => {
       ...values,
       id: Date.now(),
       vote_average: Number(values.vote_average),
+      poster_path: "/wwemzKWzjKYJFfCeiB57q3r4Bcm.png",
+      backdrop_path: null,
+      release_date: new Date().toISOString().split("T")[0],
     });
     router.push("/movies");
   };
