@@ -1,22 +1,38 @@
+import { fetchMoviesService } from "@/service/movieService";
 import { useMovieStore } from "@/store/movieStore";
 
-const { fetchMoviesService } = require("@/service/movieService");
-
-const fetchMovieAction = async () => {
-  const { setMovies, setPage, setTotal, setTotalPage, setIsLoading, setError } =
-    useMovieStore.getState();
+const fetchMovieAction = async ({
+  page = 1,
+  search = "",
+  genre = "",
+  sort = "",
+  order = "desc",
+} = {}) => {
+  const {
+    setMovies,
+    setGenres,
+    setPage,
+    setTotal,
+    setTotalPage,
+    setIsLoading,
+    setError,
+    setIsFetched,
+  } = useMovieStore.getState();
 
   setIsLoading(true);
   setError(null);
 
   try {
-    const res = await fetchMoviesService();
+    const res = await fetchMoviesService({ page, search, genre, sort, order });
 
-    setMovies(res.results);
-    setIsLoading(false);
+    setMovies(res.movies.results);
+    setGenres(res.genres.genres);
+    setPage(res.movies.page);
+    setTotal(res.movies.total_results);
+    setTotalPage(res.movies.total_pages);
+    setIsFetched(true);
   } catch (err) {
-    setMovies({});
-    setIsLoading(false);
+    setMovies([]);
     // Error state handler for each different response status
     if (!navigator.onLine) {
       setError("No internet connection.");
@@ -25,10 +41,12 @@ const fetchMovieAction = async () => {
     } else if (err.response?.status === 404) {
       setError("Data not found.");
     } else if (err.response?.status >= 500) {
-      setError("Server is error, try again later");
+      setError("Server is error, try again later.");
     } else {
-      setError("Error, try again");
+      setError("Error, try again.");
     }
+  } finally {
+    setIsLoading(false);
   }
 };
 
