@@ -1,5 +1,11 @@
-const EditPage = () => {
-  return <div>Edit Page</div>;
+import { EditMovieForm } from "@/components/movies/[id]/EditMovieForm";
+
+const EditMoviePage = () => {
+  return (
+    <main>
+      <EditMovieForm />
+    </main>
+  );
 };
 
-export default EditPage;
+export default EditMoviePage;

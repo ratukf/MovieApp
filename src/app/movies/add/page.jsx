@@ -1,5 +1,11 @@
+import { AddMovieForm } from "@/components/movies/add/AddMovieForm";
+
 const CreateMoviePage = () => {
-  return <div>Create new Movie Page</div>;
+  return (
+    <main>
+      <AddMovieForm />
+    </main>
+  );
 };
 
 export default CreateMoviePage;
