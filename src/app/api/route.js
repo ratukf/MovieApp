@@ -6,10 +6,10 @@ const GET = async (request) => {
 
   const [moviesRes, genresRes] = await Promise.all([
     fetch(
-      `${process.env.API_URL}/movie/popular?api_key=${process.env.API_KEY}&page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/movie/popular?api_key=${process.env.API_KEY}&page=${page}`,
     ),
     fetch(
-      `${process.env.API_URL}/genre/movie/list?api_key=${process.env.API_KEY}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/genre/movie/list?api_key=${process.env.API_KEY}`,
     ),
   ]);
 
