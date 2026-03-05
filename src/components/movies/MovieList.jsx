@@ -3,12 +3,27 @@
 import { MovieCard } from "@/components/movies/MovieCard";
 import { useMovieStore } from "@/store/movieStore";
 
-const MovieList = ({ search, filter }) => {
+const MovieList = ({ search, filter, sort, order }) => {
   const { movies } = useMovieStore();
 
   const filtered = movies
     .filter((m) => m.title.toLowerCase().includes((search || "").toLowerCase()))
-    .filter((m) => (filter ? m.genre_ids.includes(filter) : true));
+    .filter((m) => (filter ? m.genre_ids.includes(filter) : true))
+    .sort((a, b) => {
+      if (!sort) return 0;
+
+      let valA = a[sort];
+      let valB = b[sort];
+
+      if (sort === "year") {
+        valA = a.release_date?.split("-")[0];
+        valB = b.release_date?.split("-")[0];
+      }
+
+      if (valA < valB) return order === "desc" ? 1 : -1;
+      if (valA > valB) return order === "desc" ? -1 : 1;
+      return 0;
+    });
 
   return (
     <div>
