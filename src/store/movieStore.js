@@ -3,6 +3,7 @@ import { create } from "zustand";
 const useMovieStore = create((set) => ({
   // State
   movies: [],
+  genres: [],
   page: 0,
   totalPage: 0,
   total: 0,
@@ -12,6 +13,7 @@ const useMovieStore = create((set) => ({
 
   // State setter
   setMovies: (movies) => set({ movies }),
+  setGenres: (genres) => set({ genres }),
   setPage: (page) => set({ page }),
   setTotal: (total) => set({ total }),
   setTotalPage: (totalPage) => set({ totalPage }),
