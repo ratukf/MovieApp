@@ -4,6 +4,7 @@ const useMovieStore = create((set) => ({
   // State
   movies: [],
   genres: [],
+  bookmarks: [],
   page: 0,
   totalPage: 0,
   total: 0,
@@ -33,6 +34,12 @@ const useMovieStore = create((set) => ({
   deleteMovie: (id) =>
     set((state) => ({
       movies: state.movies.filter((m) => m.id !== id),
+    })),
+  toggleBookmark: (id) =>
+    set((state) => ({
+      bookmarks: state.bookmarks.includes(id)
+        ? state.bookmarks.filter((b) => b !== id)
+        : [...state.bookmarks, id],
     })),
 }));
 
