@@ -1,6 +1,10 @@
 "use client";
 
-import { fetchMovieAction } from "@/action/movieAction";
+import {
+  fetchAllCategoriesAction,
+  fetchMovieAction,
+  switchCategoryAction,
+} from "@/action/movieAction";
 import { MovieList } from "@/components/movies/MovieList";
 import { Pagination } from "@/components/movies/Pagination";
 import { useMovieStore } from "@/store/movieStore";
@@ -16,19 +20,41 @@ const SORT_ITEM = [
 ];
 
 const selectCls =
-  "bg-cinema-700 border borde-cinema-500 text-white text-sm rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/40 transition-all cursor-pointer";
+  "bg-cinema-700 border border-cinema-500 text-white text-sm rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-accent-400/40 focus:border-accent-400/40 transition-all cursor-pointer";
 
 const MoviesPage = () => {
-  const { isLoading, genres, error, isFetched } = useMovieStore();
+  const { isLoading, isCategoryLoading, genres, error, isFetched } =
+    useMovieStore();
   const [search, setSearch] = useState("");
   const [debouncedSearch] = useDebounce(search, 500);
   const [filter, setFilter] = useState("");
-  const [sort, setsort] = useState("");
+  const [sort, setSort] = useState("");
   const [order, setOrder] = useState("desc");
   const params = useSearchParams();
   const category = params.get("category") || "";
 
+  const hasFilters = debouncedSearch || filter || sort;
+
+  // Fetch semua kategori sekali saat pertama load
   useEffect(() => {
+    fetchAllCategoriesAction();
+  }, []);
+
+  // Klik sidebar → switch dari store, no API
+  useEffect(() => {
+    if (!isFetched) return;
+    if (hasFilters) return; // kalau ada filter aktif, biarkan hasil filter tetap
+    switchCategoryAction(category || "popular");
+  }, [category, isFetched]);
+
+  // Search/sort/filter berubah → fetch API
+  useEffect(() => {
+    if (!isFetched) return;
+    if (!hasFilters) {
+      // Filter di-clear, balik ke kategori dari store
+      switchCategoryAction(category || "popular");
+      return;
+    }
     fetchMovieAction({
       page: 1,
       search: debouncedSearch,
@@ -37,12 +63,12 @@ const MoviesPage = () => {
       order,
       category,
     });
-  }, [debouncedSearch, filter, sort, order, category]);
+  }, [debouncedSearch, filter, sort, order]);
 
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center mb-4">
+        <div className="w-14 h-14 rounded bg-red-500/10 flex items-center justify-center mb-4">
           <svg
             className="w-6 h-6 text-red-400"
             fill="currentColor"
@@ -61,11 +87,12 @@ const MoviesPage = () => {
     );
   }
 
+  const showLoading = isLoading || isCategoryLoading;
+
   return (
     <div>
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-3 mb-6">
-        {/* Search */}
         <div className="relative flex-1 min-w-48">
           <svg
             className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-500"
@@ -81,14 +108,13 @@ const MoviesPage = () => {
             />
           </svg>
           <input
-            className="w-full bg-cinema-700 border borde-cinema-500 text-white text-sm rounded-xl pl-10 pr-4 py-2 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/40 transition-all"
+            className="w-full bg-cinema-700 border border-cinema-500 text-white text-sm rounded-xl pl-10 pr-4 py-2 placeholder-cinema-400 focus:outline-none focus:ring-2 focus:ring-accent-400/40 focus:border-accent-400/40 transition-all"
             placeholder="Search movies..."
             onChange={(e) => setSearch(e.target.value)}
             value={search}
           />
         </div>
 
-        {/* Genre Filter */}
         <select
           className={selectCls}
           onChange={(e) => setFilter(Number(e.target.value))}
@@ -102,10 +128,9 @@ const MoviesPage = () => {
           ))}
         </select>
 
-        {/* Sort */}
         <select
           className={selectCls}
-          onChange={(e) => setsort(e.target.value)}
+          onChange={(e) => setSort(e.target.value)}
           value={sort}
         >
           <option value="">Sort by...</option>
@@ -116,7 +141,6 @@ const MoviesPage = () => {
           ))}
         </select>
 
-        {/* Order */}
         <select
           className={selectCls}
           onChange={(e) => setOrder(e.target.value)}
@@ -126,10 +150,9 @@ const MoviesPage = () => {
           <option value="desc">↓ Desc</option>
         </select>
 
-        {/* Add Movie */}
         <Link
           href="/movies/add"
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-accent-500 hover:bg-accent-400 text-black text-sm font-semibold transition-all duration-200 shadow-lg shadow-yellow-400/10 active:scale-[0.97] whitespace-nowrap"
+          className="flex items-center gap-2 px-4 py-2 rounded bg-accent-500 hover:bg-accent-400 text-white text-sm font-semibold transition-all duration-200 active:scale-[0.97] whitespace-nowrap"
         >
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
             <path
@@ -142,29 +165,23 @@ const MoviesPage = () => {
         </Link>
       </div>
 
-      {/* Movie Grid */}
-      {isLoading ? (
+      {showLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
-              className="rounded-xl bg-cinema-700 border borde-cinema-600 animate-pulse"
+              className="rounded bg-cinema-700 border border-cinema-600 animate-pulse"
             >
               <div className="aspect-[2/3]" />
               <div className="p-3 space-y-2">
                 <div className="h-3 bg-cinema-600 rounded" />
-                <div className="h-2 bg-cinema-700 rounded w-1/2" />
+                <div className="h-2 bg-cinema-600/50 rounded w-1/2" />
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <MovieList
-          search={debouncedSearch}
-          filter={filter}
-          sort={sort}
-          order={order}
-        />
+        <MovieList />
       )}
 
       <Pagination

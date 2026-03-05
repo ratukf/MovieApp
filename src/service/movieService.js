@@ -1,5 +1,10 @@
 import api from "@/utils/api";
 
+const fetchAllCategoriesService = async () => {
+  const res = await api.get("/api/all-categories");
+  return res.data;
+};
+
 const fetchMoviesService = async ({
   page = 1,
   search = "",
@@ -14,4 +19,4 @@ const fetchMoviesService = async ({
   return res.data;
 };
 
-export { fetchMoviesService };
+export { fetchAllCategoriesService, fetchMoviesService };
