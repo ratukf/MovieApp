@@ -7,9 +7,11 @@ import { useMovieStore } from "@/store/movieStore";
 import { useEffect } from "react";
 
 const MoviesPage = () => {
-  const { isLoading, error } = useMovieStore();
+  const { isLoading, error, isFetched } = useMovieStore();
   useEffect(() => {
-    fetchMovieAction();
+    if (!isFetched) {
+      fetchMovieAction();
+    }
   }, []);
   if (error) {
     return <p>Error: {error}</p>;

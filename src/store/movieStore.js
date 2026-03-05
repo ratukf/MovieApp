@@ -8,6 +8,7 @@ const useMovieStore = create((set) => ({
   total: 0,
   isLoading: false,
   error: null,
+  isFetched: false,
 
   // State setter
   setMovies: (movies) => set({ movies }),
@@ -16,6 +17,7 @@ const useMovieStore = create((set) => ({
   setTotalPage: (totalPage) => set({ totalPage }),
   setIsLoading: (isLoading) => set({ isLoading }),
   setError: (error) => set({ error }),
+  setIsFetched: (isFetched) => set({ isFetched }),
 
   // Custom state setter (Create, Update, Delete)
   addMovie: (movie) =>

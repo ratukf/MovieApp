@@ -3,8 +3,15 @@ import { useMovieStore } from "@/store/movieStore";
 const { fetchMoviesService } = require("@/service/movieService");
 
 const fetchMovieAction = async () => {
-  const { setMovies, setPage, setTotal, setTotalPage, setIsLoading, setError } =
-    useMovieStore.getState();
+  const {
+    setMovies,
+    setPage,
+    setTotal,
+    setTotalPage,
+    setIsLoading,
+    setError,
+    setIsFetched,
+  } = useMovieStore.getState();
 
   setIsLoading(true);
   setError(null);
@@ -14,6 +21,7 @@ const fetchMovieAction = async () => {
 
     setMovies(res.results);
     setIsLoading(false);
+    setIsFetched(true);
   } catch (err) {
     setMovies({});
     setIsLoading(false);
