@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { AppShell } from "@/components/layout/Appshell";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,7 +22,9 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
       >
         <ThemeProvider attribute="class" defaultTheme="dark">
-          <AppShell>{children}</AppShell>
+          <Suspense>
+            <AppShell>{children}</AppShell>
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>
