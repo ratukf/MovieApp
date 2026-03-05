@@ -8,7 +8,7 @@ import { useMovieStore } from "@/store/movieStore";
 const MovieDetail = () => {
   const { id } = useParams();
   const router = useRouter();
-  const { movies, deleteMovie } = useMovieStore();
+  const { movies, genres, deleteMovie } = useMovieStore();
 
   const movie = movies.find((item) => item.id === Number(id));
 
@@ -40,8 +40,11 @@ const MovieDetail = () => {
       <p>{movie.overview}</p>
 
       <div>
-        {movie.genre_ids.map((id) => (
-          <span key={id}>{id}</span>
+        {movie.genre_ids.map((genreId, index) => (
+          <span key={genreId}>
+            {genres.find((g) => g.id === genreId)?.name}
+            {index < movie.genre_ids.length - 1 ? ", " : ""}
+          </span>
         ))}
       </div>
 
