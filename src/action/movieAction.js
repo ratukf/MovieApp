@@ -7,6 +7,7 @@ const fetchMovieAction = async ({
   genre = "",
   sort = "",
   order = "desc",
+  category = "",
 } = {}) => {
   const {
     setMovies,
@@ -23,7 +24,14 @@ const fetchMovieAction = async ({
   setError(null);
 
   try {
-    const res = await fetchMoviesService({ page, search, genre, sort, order });
+    const res = await fetchMoviesService({
+      page,
+      search,
+      genre,
+      sort,
+      order,
+      category,
+    });
 
     setMovies(res.movies.results);
     setGenres(res.genres.genres);

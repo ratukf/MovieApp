@@ -14,10 +14,10 @@ const EditMovieForm = () => {
   if (!movie)
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-slate-400">Movie not found</p>
+        <p className="text-muted-400">Movie not found</p>
         <button
           onClick={() => router.back()}
-          className="mt-4 text-sm text-yellow-400 hover:underline"
+          className="mt-4 text-sm text-accent-400 hover:underline"
         >
           ← Go back
         </button>
@@ -37,7 +37,7 @@ const EditMovieForm = () => {
       {/* Back */}
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-6 transition-colors group"
+        className="flex items-center gap-2 text-sm text-muted-400 hover:text-white mb-6 transition-colors group"
       >
         <svg
           className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform"
@@ -55,9 +55,9 @@ const EditMovieForm = () => {
         Back
       </button>
 
-      <div className="rounded-2xl bg-cinema-800 border border-white/5 p-6">
+      <div className="rounded-2xl bg-cinema-800 border borde-cinema-600 p-6">
         <h2 className="text-lg font-semibold text-white mb-1">Edit Movie</h2>
-        <p className="text-sm text-slate-500 mb-6">{movie.title}</p>
+        <p className="text-sm text-muted-500 mb-6">{movie.title}</p>
         <MovieForm
           initialValues={{
             title: movie.title,

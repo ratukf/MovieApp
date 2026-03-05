@@ -22,14 +22,14 @@ const MovieCard = ({
     vote_average >= 8
       ? "text-emerald-400"
       : vote_average >= 6
-        ? "text-yellow-400"
+        ? "text-accent-400"
         : "text-red-400";
 
   return (
     <Link href={`/movies/${id}`} className="group block">
-      <div className="relative rounded-xl overflow-hidden bg-cinema-800 border border-white/5 hover:border-white/15 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/40">
+      <div className="relative rounded-xl overflow-hidden bg-cinema-800 border borde-cinema-600 hover:borde-cinema-400 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/40">
         {/* Poster */}
-        <div className="relative aspect-[2/3] overflow-hidden bg-white/5">
+        <div className="relative aspect-[2/3] overflow-hidden bg-cinema-700">
           {poster_path ? (
             <Image
               alt={title}
@@ -53,7 +53,7 @@ const MovieCard = ({
           {/* Rating badge */}
           <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/70 backdrop-blur-sm rounded-lg px-2 py-1">
             <svg
-              className="w-3 h-3 text-yellow-400"
+              className="w-3 h-3 text-accent-400"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -67,16 +67,16 @@ const MovieCard = ({
 
         {/* Info */}
         <div className="p-3">
-          <p className="text-sm font-semibold text-white truncate group-hover:text-yellow-400 transition-colors">
+          <p className="text-sm font-semibold text-white truncate group-hover:text-accent-400 transition-colors">
             {title}
           </p>
-          <p className="text-xs text-slate-500 mt-0.5">{year}</p>
+          <p className="text-xs text-muted-500 mt-0.5">{year}</p>
           {genreNames?.length > 0 && (
             <div className="flex flex-wrap gap-1 mt-2">
               {genreNames.map((name) => (
                 <span
                   key={name}
-                  className="text-[10px] px-1.5 py-0.5 rounded-md bg-white/5 text-slate-400 border border-white/5"
+                  className="text-[10px] px-1.5 py-0.5 rounded-md bg-cinema-700 text-muted-400 border borde-cinema-600"
                 >
                   {name}
                 </span>

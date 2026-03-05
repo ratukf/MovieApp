@@ -1,125 +1,155 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import NAV_ITEMS from "@/const/NAV_ITEMS";
 import { useState } from "react";
 
-const Sidebar = () => {
+const Sidebar = ({ open, onClose }) => {
   const pathname = usePathname();
-  const [expanded, setExpanded] = useState(true);
+  const searchParams = useSearchParams();
+  const [expanded, setExpanded] = useState({});
 
   return (
-    <aside className="fixed top-0 left-0 h-screen w-64 bg-cinema-800 border-r border-white/5 flex flex-col z-30">
-      {/* Logo */}
-      <div className="flex items-center gap-3 px-6 py-5 border-b border-white/5">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center flex-shrink-0">
-          <svg
-            className="w-4 h-4 text-black"
-            fill="currentColor"
-            viewBox="0 0 20 20"
+    <>
+      {/* Overlay - mobile only */}
+      {open && (
+        <div
+          className="fixed inset-0 bg-black/60 z-20 md:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      <aside
+        className={`fixed top-0 left-0 h-screen w-64 bg-cinema-800 border-r border-cinema-600 flex flex-col z-30 transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
+      >
+        {/* Logo */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-cinema-600">
+          <span className="font-bold text-lg text-white tracking-tight">
+            Movie<span className="text-accent-400">App</span>
+          </span>
+          <button
+            onClick={onClose}
+            className="md:hidden text-muted-400 hover:text-white transition-colors"
           >
-            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-          </svg>
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
         </div>
-        <span className="font-bold text-lg text-white tracking-tight">
-          Cine<span className="text-yellow-400">Vault</span>
-        </span>
-      </div>
 
-      {/* Nav */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {NAV_ITEMS.map((item) => {
-          if (item.href) {
-            const isActive =
-              pathname === item.href ||
-              (item.href !== "/" && pathname.startsWith(item.href));
-            return (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group ${
-                  isActive
-                    ? "bg-yellow-400/10 text-yellow-400 border border-yellow-400/20"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
-                }`}
-              >
-                <NavIcon label={item.label} active={isActive} />
-                {item.label}
-              </Link>
-            );
-          }
-
-          // Has children (submenu)
-          const anyChildActive = item.children?.some((c) =>
-            pathname.startsWith(c.href.split("?")[0]),
-          );
-          return (
-            <div key={item.label}>
-              <button
-                onClick={() => setExpanded((prev) => !prev)}
-                className="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-slate-200 hover:bg-white/5 transition-all duration-200"
-              >
-                <div className="flex items-center gap-3">
-                  <NavIcon label={item.label} active={anyChildActive} />
-                  <span className={anyChildActive ? "text-yellow-400" : ""}>
-                    {item.label}
-                  </span>
-                </div>
-                <svg
-                  className={`w-4 h-4 transition-transform ${expanded ? "rotate-180" : ""}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {NAV_ITEMS.map((item) => {
+            if (item.href) {
+              const isActive =
+                pathname === item.href ||
+                (item.href !== "/" && pathname.startsWith(item.href));
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  onClick={onClose}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-all duration-200 group ${
+                    isActive
+                      ? "bg-accent-500/10 text-accent-400 border border-accent-400/20"
+                      : "text-muted-400 hover:text-white hover:bg-cinema-700"
+                  }`}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-              {expanded && (
-                <div className="ml-4 mt-1 space-y-1 pl-4 border-l border-white/10">
-                  {item.children.map((child) => {
-                    const isChildActive =
-                      pathname +
-                        (typeof window !== "undefined"
-                          ? window.location.search
-                          : "") ===
-                      child.href;
-                    return (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className={`block px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
-                          isChildActive
-                            ? "text-yellow-400 bg-yellow-400/10"
-                            : "text-slate-500 hover:text-slate-200 hover:bg-white/5"
-                        }`}
-                      >
-                        {child.label}
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </nav>
+                  <NavIcon label={item.label} active={isActive} />
+                  {item.label}
+                </Link>
+              );
+            }
 
-      {/* Footer */}
-      <div className="px-6 py-4 border-t border-white/5">
-        <p className="text-xs text-slate-600">CineVault v1.0</p>
-      </div>
-    </aside>
+            const anyChildActive = item.children?.some((c) =>
+              pathname.startsWith(c.href.split("?")[0]),
+            );
+            const isExpanded = expanded[item.label] ?? false;
+
+            return (
+              <div key={item.label}>
+                <button
+                  onClick={() =>
+                    setExpanded((prev) => ({
+                      ...prev,
+                      [item.label]: !prev[item.label],
+                    }))
+                  }
+                  className="w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded text-sm font-medium text-muted-400 hover:text-white hover:bg-cinema-700 transition-all duration-200"
+                >
+                  <div className="flex items-center gap-3">
+                    <NavIcon label={item.label} active={anyChildActive} />
+                    <span className={anyChildActive ? "text-accent-400" : ""}>
+                      {item.label}
+                    </span>
+                  </div>
+                  <svg
+                    className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+                {isExpanded && (
+                  <div className="ml-4 mt-1 space-y-1 pl-4 border-l border-cinema-500">
+                    {item.children.map((child) => {
+                      const [childPath, childQuery] = child.href.split("?");
+                      const isChildActive =
+                        pathname === childPath &&
+                        searchParams.get("category") ===
+                          new URLSearchParams(childQuery).get("category");
+                      return (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={onClose}
+                          className={`block px-3 py-2 rounded text-sm transition-all duration-200 ${
+                            isChildActive
+                              ? "text-accent-400 bg-accent-500/10"
+                              : "text-muted-500 hover:text-white hover:bg-cinema-700"
+                          }`}
+                        >
+                          {child.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </nav>
+
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-cinema-600">
+          <p className="text-xs text-muted-400">Movie App</p>
+        </div>
+      </aside>
+    </>
   );
 };
 
 const NavIcon = ({ label, active }) => {
-  const cls = `w-4 h-4 flex-shrink-0 ${active ? "text-yellow-400" : "text-slate-500 group-hover:text-slate-300"}`;
+  const cls = `w-4 h-4 flex-shrink-0 ${active ? "text-accent-400" : "text-muted-500 group-hover:text-white"}`;
 
   if (label === "Home")
     return (

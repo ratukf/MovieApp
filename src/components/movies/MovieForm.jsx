@@ -14,8 +14,8 @@ const validationSchema = Yup.object({
 });
 
 const inputCls =
-  "w-full rounded-xl bg-white/5 border border-white/10 text-white text-sm px-4 py-2.5 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/40 transition-all";
-const labelCls = "block text-sm font-medium text-slate-400 mb-1.5";
+  "w-full rounded-xl bg-cinema-700 border borde-cinema-500 text-white text-sm px-4 py-2.5 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-yellow-400/40 focus:border-yellow-400/40 transition-all";
+const labelCls = "block text-sm font-medium text-muted-400 mb-1.5";
 const errorCls = "text-xs text-red-400 mt-1";
 
 const MovieForm = ({ initialValues, onSubmit }) => {
@@ -103,10 +103,11 @@ const MovieForm = ({ initialValues, onSubmit }) => {
             return (
               <label
                 key={genre.id}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm cursor-pointer transition-all duration-200 select-none ${selected
-                    ? "bg-yellow-400/10 border-yellow-400/30 text-yellow-400"
-                    : "bg-white/5 border-white/10 text-slate-400 hover:border-white/20 hover:text-slate-200"
-                  }`}
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm cursor-pointer transition-all duration-200 select-none ${
+                  selected
+                    ? "bg-accent-500/10 border-yellow-400/30 text-accent-400"
+                    : "bg-cinema-700 borde-cinema-500 text-muted-400 hover:borde-cinema-400 hover:text-white"
+                }`}
               >
                 <input
                   type="checkbox"
@@ -128,7 +129,7 @@ const MovieForm = ({ initialValues, onSubmit }) => {
       <button
         type="submit"
         onClick={formik.handleSubmit}
-        className="w-full py-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-semibold text-sm transition-all duration-200 shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 active:scale-[0.98]"
+        className="w-full py-3 rounded-xl bg-accent-500 hover:bg-accent-400 text-black font-semibold text-sm transition-all duration-200 shadow-lg shadow-yellow-400/10 hover:shadow-yellow-400/20 active:scale-[0.98]"
       >
         Save Movie
       </button>

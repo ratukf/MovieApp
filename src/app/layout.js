@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { Navbar } from "@/components/layout/Navbar";
+import { ThemeProvider } from "next-themes";
+import { AppShell } from "@/components/layout/Appshell";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -9,24 +9,20 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "CineVault – Movie App",
+  title: "Movie App",
   description: "Discover, track, and manage your favorite movies",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} font-sans bg-[#0a0a0f] text-slate-200 antialiased`}
+        className={`${inter.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <div className="flex flex-col flex-1 ml-64">
-            <Navbar />
-            <div className="flex-1 p-6">{children}</div>
-          </div>
-        </div>
+        <ThemeProvider attribute="class" defaultTheme="dark">
+          <AppShell>{children}</AppShell>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -11,18 +11,22 @@ const BookmarksPage = () => {
   if (!bookmark.length) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4">
-          <svg className="w-8 h-8 text-slate-600" fill="currentColor" viewBox="0 0 20 20">
+        <div className="w-16 h-16 rounded-2xl bg-cinema-700 flex items-center justify-center mb-4">
+          <svg
+            className="w-8 h-8 text-muted-400"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
             <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
           </svg>
         </div>
-        <p className="text-slate-300 font-medium mb-1">No bookmarks yet</p>
-        <p className="text-slate-600 text-sm mb-4">
+        <p className="text-white font-medium mb-1">No bookmarks yet</p>
+        <p className="text-muted-400 text-sm mb-4">
           Save movies you love to find them here
         </p>
         <Link
           href="/movies"
-          className="px-4 py-2 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black text-sm font-semibold transition-all duration-200"
+          className="px-4 py-2 rounded-xl bg-accent-500 hover:bg-accent-400 text-black text-sm font-semibold transition-all duration-200"
         >
           Browse Movies
         </Link>
@@ -32,7 +36,7 @@ const BookmarksPage = () => {
 
   return (
     <div>
-      <p className="text-sm text-slate-500 mb-6">
+      <p className="text-sm text-muted-500 mb-6">
         {bookmark.length} saved movie{bookmark.length !== 1 ? "s" : ""}
       </p>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">

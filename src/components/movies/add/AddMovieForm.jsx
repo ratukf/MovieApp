@@ -17,7 +17,7 @@ const AddMovieForm = () => {
       backdrop_path: null,
       release_date: new Date().toISOString().split("T")[0],
     });
-    router.push("/movies");
+    router.back();
   };
 
   return (
@@ -25,7 +25,7 @@ const AddMovieForm = () => {
       {/* Back */}
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-2 text-sm text-slate-400 hover:text-white mb-6 transition-colors group"
+        className="flex items-center gap-2 text-sm text-muted-400 hover:text-white mb-6 transition-colors group"
       >
         <svg
           className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform"
@@ -43,7 +43,7 @@ const AddMovieForm = () => {
         Back
       </button>
 
-      <div className="rounded-2xl bg-cinema-800 border border-white/5 p-6">
+      <div className="rounded-2xl bg-cinema-800 border borde-cinema-600 p-6">
         <h2 className="text-lg font-semibold text-white mb-6">New Movie</h2>
         <MovieForm onSubmit={handleSubmit} />
       </div>
