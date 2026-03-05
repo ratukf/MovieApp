@@ -1,3 +1,4 @@
+import { useMovieStore } from "@/store/movieStore";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,6 +11,7 @@ const MovieCard = ({
   genre_ids,
 }) => {
   const year = release_date?.split("-")[0];
+  const { genres } = useMovieStore();
 
   return (
     <div>
@@ -25,8 +27,11 @@ const MovieCard = ({
         <p>{year}</p>
         <p>{vote_average}</p>
         <div>
-          {genre_ids.map((id) => (
-            <span key={id}>{id}</span>
+          {genre_ids.map((genreId, index) => (
+            <span key={genreId}>
+              {genres.find((g) => g.id === genreId)?.name}
+              {index < genre_ids.length - 1 ? ", " : ""}
+            </span>
           ))}
         </div>
       </Link>
