@@ -9,4 +9,4 @@ const GET = async () => {
   return NextResponse.json(data);
 };
 
-export default GET;
+export { GET };
