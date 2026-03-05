@@ -1,5 +1,61 @@
-import { fetchMoviesService } from "@/service/movieService";
+import {
+  fetchAllCategoriesService,
+  fetchMoviesService,
+} from "@/service/movieService";
 import { useMovieStore } from "@/store/movieStore";
+
+const CATEGORIES = ["now_playing", "popular", "top_rated", "upcoming"];
+
+const fetchAllCategoriesAction = async () => {
+  const {
+    setMoviesByCategory,
+    setGenres,
+    setIsFetched,
+    setIsCategoryLoading,
+    isFetched,
+    setActiveCategory,
+    setMovies,
+    setPage,
+    setTotal,
+    setTotalPage,
+  } = useMovieStore.getState();
+
+  if (isFetched) return;
+
+  setIsCategoryLoading(true);
+
+  try {
+    const res = await fetchAllCategoriesService();
+
+    setGenres(res.genres);
+
+    CATEGORIES.forEach((cat) => {
+      setMoviesByCategory(cat, res[cat].results);
+    });
+
+    const defaultCategory = "popular";
+    setActiveCategory(defaultCategory);
+    setMovies(res[defaultCategory].results);
+    setPage(res[defaultCategory].page);
+    setTotal(res[defaultCategory].total_results);
+    setTotalPage(res[defaultCategory].total_pages);
+
+    setIsFetched(true);
+  } catch (err) {
+    console.error("Failed to fetch all categories", err);
+  } finally {
+    setIsCategoryLoading(false);
+  }
+};
+
+const switchCategoryAction = (category) => {
+  const { moviesByCategory, setMovies, setActiveCategory } =
+    useMovieStore.getState();
+
+  const movies = moviesByCategory[category] ?? [];
+  setMovies(movies);
+  setActiveCategory(category);
+};
 
 const fetchMovieAction = async ({
   page = 1,
@@ -7,33 +63,30 @@ const fetchMovieAction = async ({
   genre = "",
   sort = "",
   order = "desc",
+  category = "",
 } = {}) => {
-  const {
-    setMovies,
-    setGenres,
-    setPage,
-    setTotal,
-    setTotalPage,
-    setIsLoading,
-    setError,
-    setIsFetched,
-  } = useMovieStore.getState();
+  const { setMovies, setPage, setTotal, setTotalPage, setIsLoading, setError } =
+    useMovieStore.getState();
 
   setIsLoading(true);
   setError(null);
 
   try {
-    const res = await fetchMoviesService({ page, search, genre, sort, order });
+    const res = await fetchMoviesService({
+      page,
+      search,
+      genre,
+      sort,
+      order,
+      category,
+    });
 
     setMovies(res.movies.results);
-    setGenres(res.genres.genres);
     setPage(res.movies.page);
     setTotal(res.movies.total_results);
     setTotalPage(res.movies.total_pages);
-    setIsFetched(true);
   } catch (err) {
     setMovies([]);
-    // Error state handler for each different response status
     if (!navigator.onLine) {
       setError("No internet connection.");
     } else if (err.response?.status === 401) {
@@ -50,4 +103,4 @@ const fetchMovieAction = async ({
   }
 };
 
-export { fetchMovieAction };
+export { fetchAllCategoriesAction, switchCategoryAction, fetchMovieAction };

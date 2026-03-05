@@ -1,1 +1,69 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Playfair+Display:wght@400;500&display=swap");
 @import "tailwindcss";
+
+@theme {
+  --color-cinema-900: #080b0f;
+  --color-cinema-800: #0e1318;
+  --color-cinema-700: #151c24;
+  --color-cinema-600: #1d2730;
+  --color-cinema-500: #27333e;
+  --color-cinema-400: #34424f;
+
+  --color-accent-400: #f472b6;
+  --color-accent-500: #ec4899;
+  --color-accent-600: #db2777;
+
+  --color-secondary-400: #4ade80;
+  --color-secondary-500: #22c55e;
+  --color-secondary-600: #16a34a;
+
+  --color-muted-400: #7a9ea8;
+  --color-muted-500: #5c7f8a;
+
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-display: "Playfair Display", Georgia, serif;
+}
+
+body {
+  background-color: var(--color-cinema-900);
+  color: #bec8cc;
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+.light {
+  color-scheme: light;
+  --color-cinema-900: #f1f5f9;
+  --color-cinema-800: #ffffff;
+  --color-cinema-700: #f8fafc;
+  --color-cinema-600: #e2e8f0;
+  --color-cinema-500: #cbd5e1;
+  --color-cinema-400: #94a3b8;
+  --color-muted-400: #64748b;
+  --color-muted-500: #475569;
+}
+
+.light body {
+  color: #1e293b;
+}
+
+.light .text-white {
+  color: #1e293b;
+}
+
+.light .hover\:text-white:hover {
+  color: #1e293b;
+}
+
+.light .text-slate-700 {
+  color: #94a3b8;
+}
+
+.light .placeholder-slate-600::placeholder {
+  color: #94a3b8;
+}

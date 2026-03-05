@@ -4,12 +4,16 @@ import { StatsCard } from "@/components/home/StatsCard";
 
 const Home = () => {
   return (
-    <div>
-      <main>
-        <StatsCard />
-        <QuickAction />
-        <RecentMovies />
-      </main>
+    <div className="max-w-5xl">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold text-white mb-1">Welcome</h2>
+        <p className="text-muted-500 text-sm">
+          Discover and manage your movie collection
+        </p>
+      </div>
+      <StatsCard />
+      <QuickAction />
+      <RecentMovies />
     </div>
   );
 };
