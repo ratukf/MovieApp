@@ -19,6 +19,7 @@ const MovieCard = ({
           src={`https://image.tmdb.org/t/p/w500${poster_path}`}
           width={300}
           height={450}
+          loading="eager"
         />
         <p>{title}</p>
         <p>{year}</p>
