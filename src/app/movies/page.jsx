@@ -6,25 +6,32 @@ import { Pagination } from "@/components/movies/Pagination";
 import { useMovieStore } from "@/store/movieStore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 
 const SORT_ITEM = [
-  { key: "title", label: "Title" },
-  { key: "vote_average", label: "Vote Average" },
-  { key: "year", label: "Year" },
+  { key: "popularity", label: "Popularity" },
+  { key: "vote_average", label: "Rating" },
+  { key: "release_date", label: "Release Date" },
 ];
 
 const MoviesPage = () => {
   const { isLoading, genres, error, isFetched } = useMovieStore();
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
   const [filter, setFilter] = useState("");
   const [sort, setsort] = useState("");
-  const [order, setOrder] = useState("");
+  const [order, setOrder] = useState("desc");
 
   useEffect(() => {
-    if (!isFetched) {
-      fetchMovieAction();
-    }
-  }, []);
+    fetchMovieAction({
+      page: 1,
+      search: debouncedSearch,
+      genre: filter,
+      sort,
+      order,
+    });
+  }, [debouncedSearch, filter, sort, order]);
+
   if (error) {
     return <p>Error: {error}</p>;
   }
@@ -61,12 +68,8 @@ const MoviesPage = () => {
           <option value="desc">Descending</option>
         </select>
       </div>
-      {isLoading ? (
-        <p>Loading ...</p>
-      ) : (
-        <MovieList search={search} filter={filter} sort={sort} order={order} />
-      )}
-      <Pagination />
+      {isLoading ? <p>Loading ...</p> : <MovieList />}
+      <Pagination search={search} filter={filter} sort={sort} order={order} />
     </main>
   );
 };
