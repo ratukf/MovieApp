@@ -3,15 +3,19 @@
 import { MovieCard } from "@/components/movies/MovieCard";
 import { useMovieStore } from "@/store/movieStore";
 
-const MovieList = () => {
+const MovieList = ({ search }) => {
   const { movies } = useMovieStore();
+
+  const filtered = movies.filter((m) =>
+    m.title.toLowerCase().includes((search || "").toLowerCase()),
+  );
+
   return (
     <div>
-      <h4>MovieList</h4>
-      {movies.map((item) => (
+      {filtered.map((item) => (
         <MovieCard
-          id={item.id}
           key={item.id}
+          id={item.id}
           poster_path={item.poster_path}
           title={item.title}
           release_date={item.release_date}
