@@ -1,7 +1,13 @@
 import { fetchMoviesService } from "@/service/movieService";
 import { useMovieStore } from "@/store/movieStore";
 
-const fetchMovieAction = async (page = 1) => {
+const fetchMovieAction = async ({
+  page = 1,
+  search = "",
+  genre = "",
+  sort = "",
+  order = "desc",
+} = {}) => {
   const {
     setMovies,
     setGenres,
@@ -17,7 +23,7 @@ const fetchMovieAction = async (page = 1) => {
   setError(null);
 
   try {
-    const res = await fetchMoviesService(page);
+    const res = await fetchMoviesService({ page, search, genre, sort, order });
 
     setMovies(res.movies.results);
     setGenres(res.genres.genres);
