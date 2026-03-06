@@ -11,10 +11,15 @@ A movie discovery and management web app powered by the TMDB API.
 
 ## Screenshots
 
+<img src="public/ss1.png" width="49%" />
+
+<img src="public/ss2.png" width="49%" />
+
 <div align="center">
-  <img src="public/ss1.png" width="49%" />
-  <img src="public/ss2.png" width="49%" />
   <img src="public/ss3.png" width="49%" />
+</div>
+
+<div align="center">
   <img src="public/ss4.png" width="49%" />
 </div>
 
